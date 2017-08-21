@@ -4,10 +4,14 @@ chrome.runtime.onMessage.addListener(function(request, sender, response) {
     var curType = null;
     var types = document.querySelector('.type-select').querySelectorAll('li');
     for (var i = 0; i < types.length; i++) {
-      if (types[i].getAttribute('class').trim() === 'current') {
+      if (trim(types[i].getAttribute('class')) === 'current') {
         curType = types[i];
         break;
       }
+    }
+
+    function trim(string) {
+      return string && string.replace(/^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g, '');
     }
 
     switch (curType.innerHTML) {
