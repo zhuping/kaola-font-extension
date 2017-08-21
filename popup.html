@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>font字体上传</title>
+  <script src="js/clipboard.js"></script>
+  <script src="js/popup.js"></script>
+</head>
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+  }
+  pre {
+    white-space: pre;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+  }
+  .code-container-extension {
+    padding: 15px;
+    width: 610px;
+    border-radius: 2px;
+  }
+  .code-container-extension .code {
+    padding: 15px;
+    background-color: #f0f0f0;
+  }
+  .code-container-extension .copy{
+    padding: 0 10px;
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    color: #fff;
+    background-color: red;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    margin-top: 15px;
+    display: inline-block;
+  }
+  .code-container-extension .clipboard-tips {
+    color: green;
+  }
+</style>
+<body>
+  <div class="code-container-extension">
+    <pre class="code" id="code">获取数据中...</pre>
+    <span href="javascript:;" class="copy" data-clipboard-target="#code">复制</span>
+    <span class="clipboard-tips"></span>
+  </div>
+</body>
+</html>
