@@ -1,5 +1,6 @@
 function updatePopup(response) {
-  var urls = response && response.match(/\/\/at.alicdn.com\/[^'\?#]*/g) || '获取失败，请刷新页面重新获取~';
+  response = response || '获取失败，请刷新页面重新获取~';
+  var urls = response && response.match(/\/\/at.alicdn.com\/[^'\?#]*/g) || [];
 
   var promise = urls.map((url) => {
     var reg = new RegExp(url);
@@ -64,7 +65,7 @@ window.addEventListener('DOMContentLoaded', function() {
     currentWindow: true
   }, function(tabs) {
     chrome.tabs.sendMessage(tabs[0].id, {
-      action: 'getUnicode'
+      action: 'getCode'
     }, updatePopup);
   })
 })
