@@ -4,6 +4,7 @@
   "description": "iconfont字体上传至nos",
   "version": "1.0",
   "permissions": [
+    "tabs",
     "activeTab",
     "*://at.alicdn.com/*",
     "*://nos.kaolafed.com/upload/*"
@@ -20,7 +21,7 @@
   },
   "content_scripts": [
     {
-      "matches": ["*://iconfont.cn/*"],
+      "matches": ["*://*.iconfont.cn/*"],
       "js": ["js/getCode.js"],
       "run_at": "document_end"
     }

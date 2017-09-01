@@ -7,6 +7,8 @@ function updatePopup(response) {
     return downloadFontFile(url).then((file) => {
       return uploadFileToNeo(file)
     }).then((neoUrl) => {
+      // 去除协议头
+      neoUrl = neoUrl.replace(/^http[s]?:/g, '');
       response = response.replace(reg, neoUrl);
     })
   })
@@ -39,11 +41,15 @@ function uploadFileToNeo(file) {
     formData.append('file', file);
 
     var xhr = new XMLHttpRequest();
-    xhr.open('POST', 'http://nos.kaolafed.com/upload', true);
+    xhr.open('POST', 'https://nos.kaolafed.com/upload', true);
 
     xhr.onreadystatechange = function() {
       if (xhr.readyState === 4) {
-        resolve(JSON.parse(this.response).url);
+        try {
+          resolve(JSON.parse(this.response).url);
+        } catch (e) {
+          alert('文件上传nos出错');
+        }
       }
     }
     xhr.send(formData);
@@ -67,5 +73,17 @@ window.addEventListener('DOMContentLoaded', function() {
     chrome.tabs.sendMessage(tabs[0].id, {
       action: 'getCode'
     }, updatePopup);
+    
+    // var port = chrome.tabs.connect(tabs[0].id, {
+    //   name: 'uploadFont'
+    // })
+
+    // port.postMessage({
+    //   action: 'getCode'
+    // });
+
+    // port.onMessage.addListener(function(response) {
+    //   updatePopup(response.code)
+    // });
   })
 })
