@@ -28,7 +28,11 @@ function downloadFontFile(url) {
     xhr.responseType = 'blob';
     xhr.onreadystatechange = function() {
       if (xhr.readyState === 4) {
-        resolve(this.response);
+        var filename = /[^/]*\.[^\.]+$/.exec(url)[0];
+        var blob = new Blob([this.response], {type: 'application/octet-stream'});
+        var file = new File([blob], filename, {type: 'application/octet-stream'})
+
+        resolve(file);
       }
     }
     xhr.send();
