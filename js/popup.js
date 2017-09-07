@@ -3,7 +3,7 @@ function updatePopup(response) {
   var urls = response && response.match(/\/\/at.alicdn.com\/[^'\?#]*/g) || [];
 
   var promise = urls.map((url) => {
-    var reg = new RegExp(url);
+    var reg = new RegExp(url, 'g');
     return downloadFontFile(url).then((file) => {
       return uploadFileToNeo(file)
     }).then((neoUrl) => {
@@ -29,8 +29,9 @@ function downloadFontFile(url) {
     xhr.onreadystatechange = function() {
       if (xhr.readyState === 4) {
         var filename = /[^/]*\.[^\.]+$/.exec(url)[0];
-        var blob = new Blob([this.response], {type: 'application/octet-stream'});
-        var file = new File([blob], filename, {type: 'application/octet-stream'})
+
+        // Blob 类型转成 File 类型
+        var file = new File([this.response], filename, {type: 'application/octet-stream'})
 
         resolve(file);
       }
