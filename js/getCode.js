@@ -1,9 +1,9 @@
 chrome.runtime.onMessage.addListener(function(request, sender, response) {
   if (request.action === 'getCode') {
-    var codeNode = null;
-    var curType = null;
-    var types = document.querySelector('.type-select').querySelectorAll('li');
-    for (var i = 0; i < types.length; i++) {
+    let codeNode = null;
+    let curType = null;
+    let types = document.querySelector('.type-select').querySelectorAll('li');
+    for (let i = 0; i < types.length; i++) {
       if (trim(types[i].getAttribute('class')) === 'current') {
         curType = types[i];
         break;
