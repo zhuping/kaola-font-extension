@@ -11,14 +11,14 @@ function updatePopup(response) {
 
 function replaceResponse(response) {
   return new Promise(resolve => {
-    let urls = response && response.match(/\/\/at.alicdn.com\/[^'\?#]*/g) || [];
+    const urls = response && response.match(/\/\/at.alicdn.com\/[^'\?#]*/g) || [];
   
-    let promise = urls.map(url => {
-      let reg = new RegExp(url, 'g');
+    const promise = urls.map(url => {
+      const reg = new RegExp(url, 'g');
   
       if (!~url.indexOf('.css')) {
         return downloadFontFile(url).then(file => {
-          return uploadFileToGaia(file)
+          return uploadFileToNuwa(file)
         }).then(neoUrl => {
           // 去除协议头
           neoUrl = neoUrl.replace(/^http[s]?:/g, '');
@@ -31,9 +31,9 @@ function replaceResponse(response) {
         }).then(content => {
           return replaceResponse(content);
         }).then(newContent => {
-          let filename = /[^/]*\.[^\.]+$/.exec(url)[0];
-          let file = new File([newContent], filename, {type: 'application/octet-stream'});
-          return uploadFileToGaia(file);
+          const filename = /[^/]*\.[^\.]+$/.exec(url)[0];
+          const file = new File([newContent], filename, {type: 'application/octet-stream'});
+          return uploadFileToNuwa(file);
         }).then(newUrl => {
           newUrl = newUrl.replace(/^http[s]?:/g, '');
           resolve(newUrl);
@@ -47,17 +47,30 @@ function replaceResponse(response) {
   });
 }
 
+function getFileContent(file) {
+  return new Promise(function(resolve, reject) {
+    const reader = new FileReader();
+    reader.readAsText(file, 'UTF-8');
+    reader.onload = function(e) {
+      resolve(e.target.result);
+    }
+    reader.onerror = function(e) {
+      reject(e);
+    }
+  });
+}
+
 function downloadFontFile(url) {
   return new Promise(function(resolve, reject) {
-    let xhr = new XMLHttpRequest();
+    const xhr = new XMLHttpRequest();
     xhr.open('GET', 'http:' + url, true);
     xhr.responseType = 'blob';
     xhr.onreadystatechange = function() {
       if (xhr.readyState === 4) {
-        let filename = /[^/]*\.[^\.]+$/.exec(url)[0];
+        const filename = /[^/]*\.[^\.]+$/.exec(url)[0];
 
         // Blob 类型转成 File 类型
-        let file = new File([this.response], filename, {type: 'application/octet-stream'})
+        const file = new File([this.response], filename, {type: 'application/octet-stream'})
 
         resolve(file);
       }
@@ -66,9 +79,9 @@ function downloadFontFile(url) {
   });
 }
 
-function uploadFileToNeo(file) {
+function uploadFileToNuwa(file) {
   return new Promise(function(resolve, reject) {
-    let formData = new FormData();
+    const formData = new FormData();
     formData.append('file', file);
 
     let xhr = new XMLHttpRequest();
@@ -88,7 +101,7 @@ function uploadFileToNeo(file) {
 }
 
 function initClipboard() {
-  let clipboard = new Clipboard('.copy');
+  const clipboard = new Clipboard('.copy');
 
   clipboard.on('success', function(e) {
     document.querySelector('.clipboard-tips').innerHTML = '复制成功';
