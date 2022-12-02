@@ -3,10 +3,6 @@
   "name": "font字体上传",
   "description": "iconfont字体上传至nos",
   "version": "1.2",
-  "permissions": [
-    "tabs",
-    "activeTab"
-  ],
   "host_permissions": [
     "*://at.alicdn.com/*",
     "*://nos.kaolafed.com/upload/*"
